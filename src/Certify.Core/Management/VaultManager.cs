@@ -464,7 +464,7 @@ namespace Certify
             /*
             //config file now has a temp path to write to, begin challenge (writes to temp file with challenge content)
             */
-            if (identifier.Authorization != null && identifier.Authorization.IsPending())
+            if (identifier.Authorization.IsPending())
             {
                 var ccrResult = powershellManager.CompleteChallenge(identifier.Alias, regenerate: true);
 
@@ -562,7 +562,7 @@ namespace Certify
             }
             else
             {
-                //identifier is already valid (previously authorized) or identifier failed to register
+                //identifier is already valid (previously authorized)
                 return new PendingAuthorization() { Challenge = null, Identifier = identifier, TempFilePath = "", ExtensionlessConfigCheckedOK = false };
             }
         }

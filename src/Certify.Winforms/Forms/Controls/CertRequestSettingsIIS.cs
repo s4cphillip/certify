@@ -90,18 +90,8 @@ namespace Certify.Forms.Controls
 
             var vaultConfig = VaultManager.GetVaultConfig();
 
-            //check if domain already has an associated unexpired identifier
+            //check if domain already has an associated identifier
             var identifierAlias = VaultManager.ComputeIdentifierAlias(config.Domain);
-
-            var existingIdentifier = VaultManager.GetIdentifier(config.Domain);
-            if (existingIdentifier != null)
-            {
-                if (existingIdentifier.Authorization != null && existingIdentifier.Authorization.Status != "invalid" && existingIdentifier.Authorization.Expires.HasValue && existingIdentifier.Authorization.Expires > DateTime.Now.AddDays(-1))
-                {
-                    //reuse existing identifier, it is already pending or valid and reduces chance of hitting a rate limit
-                    identifierAlias = existingIdentifier.Alias;
-                }
-            }
 
             //begin authorixation process (register identifier, request authorization if not already given)
             var authorization = VaultManager.BeginRegistrationAndValidation(config, identifierAlias);
