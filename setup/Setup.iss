@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Certify
-AppVersion=0.9.97
+AppVersion=0.9.96
 AppPublisher=Webprofusion Ltd
 AppPublisherURL=https://webprofusion.com
 AppUpdatesURL=https://certify.webprofusion.com/
@@ -31,5 +31,3 @@ Source: "..\src\Certify.WinForms\bin\Release\ACMESharp-Providers\*"; DestDir: "{
 [Icons]
 Name: "{group}\Certify"; Filename: "{app}\Certify.exe"
 
-[Run]
-Filename: "{app}\Certify.exe"; 
