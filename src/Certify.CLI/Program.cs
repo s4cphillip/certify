@@ -167,7 +167,7 @@ namespace Certify.CLI
             {
                 //all good, we can request a certificate
                 //if authorizing a SAN we would need to repeat the above until all domains are valid, then we can request cert
-                var certAlias = "cert_" + domainIdentifierAlias;
+                var certAlias = vaultManager.ComputeCertAlias(domainIdentifierAlias);
 
                 //register cert placeholder in vault
                 certifyManager.NewCertificate(domainIdentifierAlias, certAlias, subjectAlternativeNameIdentifiers: null);

@@ -136,8 +136,6 @@ namespace Certify
             {
                 if (!discardErrors)
                 {
-
-
                     LogAction("[Error]: " + exp.ToString());
                 }
 
@@ -308,7 +306,7 @@ namespace Certify
 
             var cmd = ps.Commands.AddCommand("Submit-ACMECertificate");
             cmd.AddParameter("Ref", certAlias);
-            //  cmd.AddParameter("Force", force);
+            cmd.AddParameter("Force", true);
             var results = ps.Invoke();
 
             LogAction("Powershell: Submit-ACMECertificate -Ref " + certAlias);

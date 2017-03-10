@@ -348,17 +348,53 @@ namespace Certify
 
         #region Certificates
 
-        public bool CertExists(string domainAlias)
+        public bool CertExists(string domainAlias, bool deleteCollisions = false)
         {
             var certRef = "cert_" + domainAlias;
 
             if (vaultConfig.Certificates != null && vaultConfig.Certificates.Values.Any(c => c.Alias == certRef))
             {
+                if (deleteCollisions)
+                {
+                    DeleteCertificate(certRef);
+                }
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        public bool DeleteCertificate(string certAlias)
+        {
+            using (var vlt = ACMESharp.POSH.Util.VaultHelper.GetVault())
+            {
+                try
+                {
+                    vlt.OpenStorage(true);
+                    if (vaultConfig.Certificates != null)
+                    {
+                        var idsToRemove = vaultConfig.Certificates.Values.Where(i => i.Alias == certAlias);
+                        List<Guid> removing = new List<Guid>();
+                        foreach (var item in idsToRemove)
+                        {
+                            removing.Add(item.Id);
+                        }
+                        foreach (var item in removing)
+                        {
+                            vaultConfig.Certificates.Remove(item);
+                        }
+
+                        vlt.SaveVault(vaultConfig);
+                    }
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
         }
 
@@ -380,9 +416,20 @@ namespace Certify
             }
         }
 
-        public string CreateCertificate(string domainAlias)
+        public string ComputeCertAlias(string domainAlias, bool deleteCollisions = false)
         {
             var certRef = "cert_" + domainAlias;
+
+            if (CertExists(domainAlias, deleteCollisions))
+            {
+                // certRef = certRef + "_" + DateTime.Now.Millisecond; //FIXME: unliable as unique but temporarily avoids alias collision
+            }
+            return certRef;
+        }
+
+        public string CreateCertificate(string domainAlias)
+        {
+            var certRef = ComputeCertAlias(domainAlias, deleteCollisions: true);
 
             powershellManager.NewCertificate(domainAlias, certRef);
 
