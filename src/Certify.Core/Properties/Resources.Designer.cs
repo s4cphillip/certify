@@ -208,7 +208,7 @@ namespace Certify.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 20170205.Alpha13.
+        ///   Looks up a localized string similar to 20170309.Alpha14.
         /// </summary>
         public static string ReleaseDate {
             get {
