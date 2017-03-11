@@ -429,7 +429,7 @@ namespace Certify
 
         public string CreateCertificate(string domainAlias)
         {
-            var certRef = ComputeCertAlias(domainAlias, deleteCollisions: true);
+            var certRef = ComputeCertAlias(domainAlias, deleteCollisions: false);
 
             powershellManager.NewCertificate(domainAlias, certRef);
 

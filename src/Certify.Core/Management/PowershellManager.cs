@@ -306,7 +306,7 @@ namespace Certify
 
             var cmd = ps.Commands.AddCommand("Submit-ACMECertificate");
             cmd.AddParameter("Ref", certAlias);
-            cmd.AddParameter("Force", true);
+            //cmd.AddParameter("Force", true);
             var results = ps.Invoke();
 
             LogAction("Powershell: Submit-ACMECertificate -Ref " + certAlias);

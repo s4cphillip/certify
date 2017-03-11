@@ -79,6 +79,7 @@ namespace Certify.Forms.Controls
 
             bool certsApproved = false;
             bool certsStored = false;
+            bool enableIdentifierResuse = false; //if reusing an identifier it can cause issues with certificates mismatched to new identifier
 
             CertRequestConfig config = new CertRequestConfig();
             var selectItem = (SiteBindingItem)lstSites.SelectedItem;
@@ -93,13 +94,16 @@ namespace Certify.Forms.Controls
             //check if domain already has an associated unexpired identifier
             var identifierAlias = VaultManager.ComputeIdentifierAlias(config.Domain);
 
-            var existingIdentifier = VaultManager.GetIdentifier(config.Domain);
-            if (existingIdentifier != null)
+            if (enableIdentifierResuse)
             {
-                if (existingIdentifier.Authorization != null && existingIdentifier.Authorization.Status != "invalid" && existingIdentifier.Authorization.Expires.HasValue && existingIdentifier.Authorization.Expires > DateTime.Now.AddDays(-1))
+                var existingIdentifier = VaultManager.GetIdentifier(config.Domain);
+                if (existingIdentifier != null)
                 {
-                    //reuse existing identifier, it is already pending or valid and reduces chance of hitting a rate limit
-                    identifierAlias = existingIdentifier.Alias;
+                    if (existingIdentifier.Authorization != null && existingIdentifier.Authorization.Status != "invalid" && existingIdentifier.Authorization.Expires.HasValue && existingIdentifier.Authorization.Expires > DateTime.Now.AddDays(-1))
+                    {
+                        //reuse existing identifier, it is already pending or valid and reduces chance of hitting a rate limit
+                        identifierAlias = existingIdentifier.Alias;
+                    }
                 }
             }
 

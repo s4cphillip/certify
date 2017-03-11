@@ -3,8 +3,8 @@
 
 [Setup]
 AppName=Certify
-AppVersion=0.9.97
-AppPublisher=Webprofusion Ltd
+AppVersion=0.9.98
+AppPublisher=Webprofusion Pty Ltd
 AppPublisherURL=https://webprofusion.com
 AppUpdatesURL=https://certify.webprofusion.com/
 DefaultDirName={pf}\Certify
